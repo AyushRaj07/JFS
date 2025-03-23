@@ -1,0 +1,73 @@
+In Java, the heap memory is a crucial part of the memory model where objects are stored. It is divided into different regions to optimize memory management and garbage collection. Let’s break down the structure of the heap memory in Java, including the Young Generation, Old Generation, and the String Pool.
+
+1. Young Generation
+The Young Generation is where new objects are allocated. It is designed to hold short-lived objects. It is further divided into three parts:
+
+a) Eden Space
+Purpose: This is where all new objects are initially allocated.
+
+How it works: When the Eden Space fills up, a minor garbage collection (also called a Young GC) is triggered. During this process, live objects are moved to one of the Survivor Spaces, and dead objects are removed.
+
+Example: If you create a new object in your Java program, it will first be placed in the Eden Space.
+
+b) Survivor Spaces (S0 and S1)
+Purpose: These spaces hold objects that have survived one or more minor garbage collections.
+
+How it works:
+
+There are two Survivor Spaces: S0 (Survivor 0) and S1 (Survivor 1).
+
+After a minor GC, live objects from the Eden Space are moved to one of the Survivor Spaces (e.g., S0).
+
+During the next minor GC, live objects from both Eden and the active Survivor Space (e.g., S0) are moved to the other Survivor Space (e.g., S1).
+
+Objects that survive multiple garbage collections in the Survivor Spaces are eventually promoted to the Old Generation.
+
+Example: If an object survives a few garbage collections, it will move back and forth between S0 and S1 before being promoted to the Old Generation.
+
+2. Old Generation (Tenured)
+Purpose: This is where long-lived objects are stored.
+
+How it works:
+
+Objects that survive multiple garbage collections in the Young Generation are moved to the Old Generation.
+
+The Old Generation is cleaned up by a major garbage collection (also called a Full GC), which is less frequent but takes more time than a minor GC.
+
+Example: If an object is used throughout the lifetime of the application, it will eventually end up in the Old Generation.
+
+3. String Pool (Part of Heap)
+Purpose: The String Pool is a special area in the heap memory where string literals and interned strings are stored.
+
+How it works:
+
+When you create a string literal (e.g., String s = "hello";), the JVM checks if the string already exists in the String Pool. If it does, the existing reference is reused. If not, the string is added to the pool.
+
+The intern() method can be used to explicitly add a string to the pool or retrieve an existing reference.
+
+Example:
+
+java
+Copy
+String s1 = "hello"; // "hello" is added to the String Pool
+String s2 = "hello"; // s2 points to the same "hello" in the String Pool
+String s3 = new String("hello").intern(); // s3 also points to the same "hello"
+How Garbage Collection Works in Java Heap
+Minor GC (Young Generation):
+
+Cleans up the Eden Space and Survivor Spaces.
+
+Moves live objects between Survivor Spaces and promotes long-lived objects to the Old Generation.
+
+Major GC (Old Generation):
+
+Cleans up the Old Generation.
+
+This is a more expensive operation and can cause application pauses (stop-the-world events).
+
+Full GC:
+
+Cleans up both the Young and Old Generations.
+
+This is the most expensive garbage collection process.
+
