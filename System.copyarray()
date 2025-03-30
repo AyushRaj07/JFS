@@ -1,0 +1,130 @@
+### `System.arraycopy()` in Java
+
+`System.arraycopy()` is a method in Java that provides a fast way to copy elements from one array to another. It is a native method, meaning it is implemented in a low-level language like C for better performance.
+
+---
+
+## **Method Signature**
+```java
+public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+```
+
+## **Parameters**
+| Parameter | Description |
+|-----------|------------|
+| `src` | The source array from which elements are copied. |
+| `srcPos` | The starting position in the source array. |
+| `dest` | The destination array where elements are copied. |
+| `destPos` | The starting position in the destination array. |
+| `length` | The number of elements to copy. |
+
+---
+
+## **Key Points**
+1. **Efficient Copying**: It is faster than manual element-by-element copying because it is implemented natively.
+2. **Works with Primitive & Object Arrays**: It supports copying both primitive (e.g., `int[]`, `double[]`) and object arrays (e.g., `String[]`).
+3. **Overlapping Allowed (for Same Array)**: If `src` and `dest` are the same array, it handles overlapping regions correctly.
+4. **Throws Exceptions**:
+   - `ArrayStoreException` → If array types are incompatible.
+   - `IndexOutOfBoundsException` → If indices are out of bounds.
+   - `NullPointerException` → If `src` or `dest` is `null`.
+
+---
+
+## **Example Usage**
+### **Copying a Portion of an Array**
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] srcArray = {10, 20, 30, 40, 50};
+        int[] destArray = new int[5];
+
+        // Copy 3 elements from srcArray starting at index 1 to destArray at index 0
+        System.arraycopy(srcArray, 1, destArray, 0, 3);
+
+        // Print the destination array
+        for (int num : destArray) {
+            System.out.print(num + " ");
+        }
+    }
+}
+```
+**Output:**
+```
+20 30 40 0 0
+```
+
+---
+
+### **Copying an Object Array**
+```java
+public class Main {
+    public static void main(String[] args) {
+        String[] names = {"Alice", "Bob", "Charlie", "David"};
+        String[] newNames = new String[4];
+
+        System.arraycopy(names, 1, newNames, 0, 3);
+
+        for (String name : newNames) {
+            System.out.print(name + " ");
+        }
+    }
+}
+```
+**Output:**
+```
+Bob Charlie David null
+```
+
+---
+
+### **Handling Overlapping Arrays**
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+
+        // Overlapping copy: Moving elements right by 1
+        System.arraycopy(numbers, 1, numbers, 2, 3);
+
+        for (int num : numbers) {
+            System.out.print(num + " ");
+        }
+    }
+}
+```
+**Output:**
+```
+1 2 2 3 4
+```
+(Note: `5` is lost due to shifting.)
+
+---
+
+## **Comparison with `Arrays.copyOf()`**
+| Feature | `System.arraycopy()` | `Arrays.copyOf()` |
+|---------|--------------------|----------------|
+| Speed | Faster (native implementation) | Slower |
+| Partial Copy | Yes (you choose start and length) | No (copies entire array or resizes) |
+| Overlapping Copy | Yes (within the same array) | No |
+| Return Type | Copies into existing array | Returns a new array |
+
+### Example:
+```java
+int[] newArr = Arrays.copyOf(srcArray, 3);
+```
+This creates a **new array** with the first 3 elements of `srcArray`.
+
+---
+
+## **When to Use `System.arraycopy()`?**
+- When you need fast copying for performance-sensitive applications.
+- When copying only a portion of an array.
+- When modifying an array in place (e.g., shifting elements).
+
+---
+
+## **Conclusion**
+`System.arraycopy()` is a powerful and efficient method for copying arrays in Java. It is especially useful when working with large datasets where performance matters. However, be cautious of exceptions and ensure that the destination array has enough space before copying.
+
+Would you like me to explain anything further? 🚀
