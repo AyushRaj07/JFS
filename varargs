@@ -1,0 +1,128 @@
+Sure! Let’s break this concept down and explain **variable arity methods (varargs)** in Java in detail.
+
+---
+
+### 🔶 What is Variable Arity (Varargs)?
+
+**Variable arity** (also called **varargs**) is a feature in Java that allows a method to accept **a variable number of arguments** of the **same type**. Instead of creating multiple overloaded methods to handle different numbers of parameters, you can use a single varargs method.
+
+---
+
+### 🧠 Why is Varargs Useful?
+
+Suppose you want to write a method to add integers:
+```java
+int add(int a, int b);
+int add(int a, int b, int c);
+int add(int a, int b, int c, int d);
+```
+
+This quickly becomes messy. Instead, using varargs:
+```java
+int add(int... numbers);
+```
+Now you can call `add(1, 2)`, `add(1, 2, 3)`, or `add(1, 2, 3, 4, 5)` — all with the same method!
+
+---
+
+### 🔧 Syntax of Varargs
+
+```java
+returnType methodName(type... variableName)
+```
+
+- `type...` means a variable number of arguments of `type`.
+- Under the hood, the varargs are treated as an **array**.
+
+#### Example:
+```java
+public void printNames(String... names) {
+    for (String name : names) {
+        System.out.println(name);
+    }
+}
+```
+
+You can call it like:
+```java
+printNames("Alice");
+printNames("Bob", "Charlie", "Diana");
+```
+
+---
+
+### 🔍 How It Works Behind the Scenes
+
+When you define:
+```java
+void display(int... nums)
+```
+
+It’s treated as:
+```java
+void display(int[] nums)
+```
+
+So inside the method, `nums` behaves like a regular array.
+
+---
+
+### 📌 Rules & Restrictions
+
+1. **Only one varargs parameter** is allowed in a method.
+   ```java
+   // Correct:
+   void test(String... words)
+
+   // Incorrect:
+   void test(String... words, int... numbers) // Compilation error
+   ```
+
+2. **Varargs must be the last parameter** in the method signature.
+   ```java
+   // Correct:
+   void test(String title, int... numbers)
+
+   // Incorrect:
+   void test(int... numbers, String title) // Compilation error
+   ```
+
+3. You can pass:
+   - Individual arguments (`method(1, 2, 3)`)
+   - An array explicitly (`method(new int[]{1, 2, 3})`)
+
+---
+
+### ✅ Practical Example
+
+Let’s create a method that calculates the average of a given set of doubles.
+
+```java
+public class Stats {
+    public static double average(double... values) {
+        double sum = 0;
+        for (double val : values) {
+            sum += val;
+        }
+        return values.length == 0 ? 0 : sum / values.length;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(average(10, 20));       // 15.0
+        System.out.println(average(5, 10, 15, 20)); // 12.5
+    }
+}
+```
+
+---
+
+### 🧩 Summary
+
+- Varargs lets you pass a variable number of parameters of the same type.
+- It reduces code duplication and improves readability.
+- Internally, the arguments are treated as an array.
+- Great for utility methods like `sum()`, `average()`, `print()`, etc.
+
+---
+
+Let me know if you'd like to see a real-world example or how it compares to method overloading!
